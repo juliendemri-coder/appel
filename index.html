@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Appel</title>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:-apple-system,system-ui,sans-serif;background:#F2F4F7;color:#15202B;text-align:center;padding:24px;box-sizing:border-box}
+  a{display:block;background:#15803D;color:#fff;text-decoration:none;font-size:22px;font-weight:700;padding:20px 28px;border-radius:14px;margin:16px 0}
+  p{color:#5A6774;margin:0}
+  @media (prefers-color-scheme:dark){body{background:#0E141A;color:#E6ECF2}p{color:#94A3B1}}
+</style>
+</head>
+<body>
+<main>
+  <p id="msg">Numéro manquant.</p>
+  <a id="go" href="#" hidden>Appeler</a>
+  <p id="back" hidden>Après l'appel, reviens sur ton carnet.</p>
+</main>
+<script>
+  var n = (new URLSearchParams(location.search).get('n') || '').replace(/[^\d+]/g, '');
+  if (/^0\d{9}$/.test(n)) n = '+33' + n.slice(1);
+  if (/^\+?\d{6,15}$/.test(n)) {
+    var shown = n.replace(/^\+33/, '0').replace(/(\d{2})(?=\d)/g, '$1 ');
+    var go = document.getElementById('go');
+    go.href = 'tel:' + n;
+    go.textContent = 'Appeler le ' + shown;
+    go.hidden = false;
+    document.getElementById('back').hidden = false;
+    document.getElementById('msg').textContent = 'Appel en cours de lancement…';
+    location.href = 'tel:' + n;
+  }
+</script>
+</body>
+</html>
